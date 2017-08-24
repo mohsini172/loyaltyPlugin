@@ -1,0 +1,27 @@
+<div class="offerwall" ng-controller="WidgetOfferwallCtrl as WidgetOfferwall">
+	<!-- <div ng-repeat="offer in WidgetOfferwall.offers">
+		<div class="">
+			<img ng-src="{{WidgetOfferwall.trustSrc(offer.thumbnail.lowres)}}" alt="">
+		</div>
+		<span>{{offer.title}}</span>
+	</div> -->
+	<h4 class="pad-5-left" ng-if = "WidgetOfferwall.offers.length>0">Available offers</h4>
+	<h4 class="pad-5-left" ng-if = "WidgetOfferwall.offers.length<=0">No offers available at this time</h4>
+	<ul class="list-group">
+		<li ng-repeat="offer in WidgetOfferwall.offers" class="list-group-item">
+			<a target="_blank" ng-click = "WidgetOfferwall.openOffer(offer.link)">
+				<div class="row">
+					<div class="col-xs-3 no-pad pad-5-left">
+						<img ng-src="{{WidgetOfferwall.trustSrc(offer.thumbnail.lowres)}}" alt="">
+					</div>
+					<div class="col-xs-9 no-pad">
+						<h4>{{offer.title}}
+							<span class="badge pull-right">+{{offer.payout}} GEMZ </span>
+						</h4>
+						<h5>{{offer.required_actions}}</h5>
+					</div>
+				</div>
+			</a>
+		</li>
+	</ul>
+</div>
