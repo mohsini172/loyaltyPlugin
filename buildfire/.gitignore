@@ -30,7 +30,4 @@ node_modules
 /fonticons.zip
 /styles.zip
 /scripts.zip
-plugins
 /plugins/loyaltyPlugin/node_modules
-!/plugins/myPlugin/
-!/plugins/testPlugin/
