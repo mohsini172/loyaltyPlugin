@@ -290,6 +290,16 @@
       var userid = null;
       var socket = io('http://localhost:8080');
       var recieveCallback = () => { };
+
+      var appid = "appid=106186&"
+      var format = "format=json&"
+      var googleID = "google_ad_id=2E7CE4B3-F68A-44D9-A923-F4E48D92B31E&google_ad_id_limited_tracking_enabled=false&"
+      var locale = "locale=en&os_version=9.0&"
+      var timestamp = "timestamp=1503159710&"
+      var uid = "uid=player&"
+      var hashkey = "hashkey=b4dd3ecf31ddda9d3bbac29abf2f6a933419fb1f";
+      var apiKey = "3c548e669647a891d9fd543a12721216897ca63b"
+      var userId = "";
       return {
         getAds: getAds,
         receiveOffers: receiveOffers
@@ -297,10 +307,27 @@
       function getAds(callback) {
         buildfire.auth.getCurrentUser((err, user) => {
           if (user) {
-            var emitKey = instanceId + user._id;
-            socket.emit('getOffer', { uid: emitKey });
-            socket.on(emitKey, receiveOffers);
-            recieveCallback = callback;
+            uid = 'uid=' + instanceId + user._id + '&';
+            var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
+            var params = appid + format + googleID + locale + timestamp + uid;
+            var hashkey = sha1(params + apiKey);
+            hashkey = 'hashkey=' + hashkey;
+            params = params + hashkey;
+            var url = 'http://api.fyber.com/feed/v1/offers.json?' + params;
+            console.log(params);
+            $http({
+              method: 'GET',
+              url: url
+            }).then(function (data) {
+              console.log(data);
+            }, function (err) {
+              console.log(err);
+            })
+            // var emitKey = instanceId + user._id;
+            // socket.emit('getOffer', { uid: emitKey });
+            // socket.on(emitKey, receiveOffers);
+            // recieveCallback = callback;
+
           }
         });
       }

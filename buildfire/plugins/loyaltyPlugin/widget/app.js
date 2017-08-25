@@ -13,7 +13,8 @@
         // Allow same origin resource loads.
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
-        'http://cdn*.sponsorpay.com/**'
+        'http://cdn*.sponsorpay.com/**',
+        'http://api.fyber.com/**'
       ]);
 
       $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
