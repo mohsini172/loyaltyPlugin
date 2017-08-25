@@ -288,7 +288,8 @@
     .factory('FyberAPI', ['$http', 'Context', function ($http, Context) {
       var instanceId = Context.getContext().instanceId;
       var userid = null;
-      var socket = io('http://localhost:8080');
+      var credentials = {};
+      var socket;
       var recieveCallback = () => { };
 
       var appid = "appid=106186&"
@@ -307,26 +308,38 @@
       function getAds(callback) {
         buildfire.auth.getCurrentUser((err, user) => {
           if (user) {
-            uid = 'uid=' + instanceId + user._id + '&';
-            var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
-            var params = appid + format + googleID + locale + timestamp + uid;
-            var hashkey = sha1(params + apiKey);
-            hashkey = 'hashkey=' + hashkey;
-            params = params + hashkey;
-            var url = 'http://api.fyber.com/feed/v1/offers.json?' + params;
-            console.log(params);
-            $http({
-              method: 'GET',
-              url: url
-            }).then(function (data) {
-              console.log(data);
-            }, function (err) {
-              console.log(err);
-            })
-            // var emitKey = instanceId + user._id;
-            // socket.emit('getOffer', { uid: emitKey });
-            // socket.on(emitKey, receiveOffers);
-            // recieveCallback = callback;
+            // uid = 'uid=' + instanceId + user._id + '&';
+            // var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
+            // var params = appid + format + googleID + locale + timestamp + uid;
+            // var hashkey = sha1(params + apiKey);
+            // hashkey = 'hashkey=' + hashkey;
+            // params = params + hashkey;
+            // var url = 'http://api.fyber.com/feed/v1/offers.json?' + params;
+            // console.log(params);
+            // $http({
+            //   method: 'GET',
+            //   url: url
+            // }).then(function (data) {
+            //   console.log(data);
+            // }, function (err) {
+            //   console.log(err);
+            // })
+            //getting saved credentials
+            buildfire.datastore.get("credentials", (err, data) => {
+              if (err) {
+                return buildfire.notifications.alert({ message: "No credentials found" }, () => { });
+              }
+              else{
+                var credentials = data.data;
+                socket = io(credentials.server);
+                var emitKey = instanceId + user._id;
+                credentials.uid = emitKey;
+                socket.emit('getOffer', credentials);
+                socket.on(emitKey, receiveOffers);
+                recieveCallback = callback;
+              }
+                
+            });
 
           }
         });

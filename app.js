@@ -28,10 +28,14 @@ var getSHA1 = function (input) {
 io.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
 	socket.on('getOffer', function (data) {
+		appid = 'appid='+data.appid + '&';
 		uid = 'uid=' + data.uid + '&';
 		userId = data.uid;
+		googleID = "google_ad_id="+data.google_ad_id+"&";
+		tracker = "google_ad_id_limited_tracking_enabled="+data.google_ad_id_limited_tracking_enabled+"&";
+		apiKey = data.apiKey;
 		var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
-		var params = appid + format + googleID + locale + timestamp + uid;
+		var params = appid + format + googleID + tracker + locale + timestamp + uid;
 		var hashkey = getSHA1(params + apiKey);
 		hashkey = 'hashkey=' + hashkey;
 		params = params + hashkey;
