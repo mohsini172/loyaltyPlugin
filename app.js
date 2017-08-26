@@ -25,7 +25,7 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 // start server on the specified port and binding host
 server.listen(server_port, server_ip_address, '0.0.0.0', function() {
   // print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
+  console.log("server starting on " + server_port);
 });
 
 var getSHA1 = function (input) {
