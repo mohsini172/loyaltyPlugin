@@ -14,16 +14,16 @@ var locale = "locale=en&os_version=9.0&"
 var timestamp = "timestamp=1503159710&"
 var uid = "uid=player&"
 var hashkey = "hashkey=b4dd3ecf31ddda9d3bbac29abf2f6a933419fb1f";
-var apiKey = "3c548e669647a891d9fd543a12721216897ca63b"
+var apiKey = "3c548e669647a891d9fd543a12721216897ca63b";
 var userId = "";
 
 
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
 // start server on the specified port and binding host
-server.listen(server_port, server_ip_address, '0.0.0.0', function() {
+server.listen(server_port, server_ip_address, function() {
   // print a message when the server starts listening
   console.log("server starting on " + server_port);
 });
