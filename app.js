@@ -4,7 +4,6 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var http = require('http');
 var crypto = require('crypto');
-var cfenv = require('cfenv');
 
 
 //params for requesting the offerwall
@@ -20,10 +19,11 @@ var userId = "";
 
 
 
-var appEnv = cfenv.getAppEnv();
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 // start server on the specified port and binding host
-server.listen(appEnv.port, '0.0.0.0', function() {
+server.listen(server_port, server_ip_address, '0.0.0.0', function() {
   // print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
 });
