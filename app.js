@@ -4,6 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var http = require('http');
 var crypto = require('crypto');
+var cfenv = require('cfenv');
 
 
 //params for requesting the offerwall
@@ -18,8 +19,14 @@ var apiKey = "3c548e669647a891d9fd543a12721216897ca63b"
 var userId = "";
 
 
-server.listen(8080);
 
+var appEnv = cfenv.getAppEnv();
+
+// start server on the specified port and binding host
+server.listen(appEnv.port, '0.0.0.0', function() {
+  // print a message when the server starts listening
+  console.log("server starting on " + appEnv.url);
+});
 
 var getSHA1 = function (input) {
 	return crypto.createHash('sha1').update(input).digest('hex')
