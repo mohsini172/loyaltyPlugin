@@ -332,10 +332,13 @@
               else{
                 var credentials = data.data;
                 socket = io(credentials.server);
-                var emitKey = user._id;
+                var emitKey = instanceId + user._id;
                 credentials.uid = emitKey;
                 socket.emit('getOffer', credentials);
                 socket.on(emitKey, receiveOffers);
+                socket.on('reward'+emitKey, (data)=>{
+                  console.log(data);
+                })
                 recieveCallback = callback;
               }
                 
