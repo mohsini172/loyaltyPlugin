@@ -67,6 +67,7 @@ io.on('connection', function (socket) {
 	}
 	app.get('/reward', function(req, res){
 		res.sendStatus(200);
+		console.log(req.params, req.query);
 		socket.emit(userId, req.params)
 	});
 });
