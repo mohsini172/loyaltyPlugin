@@ -16,6 +16,7 @@ var uid = "uid=player&"
 var hashkey = "hashkey=b4dd3ecf31ddda9d3bbac29abf2f6a933419fb1f";
 var apiKey = "3c548e669647a891d9fd543a12721216897ca63b";
 var userId = "";
+var security_token = "332349b0cb9bd37c7ec67095de9046fb";
 
 
 
@@ -31,6 +32,21 @@ server.listen(server_port, server_ip_address, function() {
 var getSHA1 = function (input) {
 	return crypto.createHash('sha1').update(input).digest('hex')
 }
+
+//universal function for emitting data to socket connection later it will replaced by socket on connection event
+var rewardUser = (rewardedUser, amount, currency)=>{};
+
+//callback request when offer is completed
+app.get('/reward', function(req, res){
+	res.sendStatus(200);
+	var rewardedUser = req.query.uid;
+	var amount = req.query.amount;
+	var currency = req.query.currency_id;
+	rewardUser(rewardedUser, amount, currency);
+});
+
+
+
 
 
 io.on('connection', function (socket) {
@@ -65,11 +81,10 @@ io.on('connection', function (socket) {
 			socket.emit(userId, str);
 		});
 	}
-	app.get('/reward', function(req, res){
-		res.sendStatus(200);
-		console.log(req.params, req.query);
-		socket.emit(userId, req.params)
-	});
+
+	rewardUser = function(rewardedUser, amount, currency){
+		socket.emit(rewardedUser, {amount: amount, currency: currency});
+	}
 });
 
 app.use(express.static(__dirname + '/buildfire'));

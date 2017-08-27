@@ -332,7 +332,7 @@
               else{
                 var credentials = data.data;
                 socket = io(credentials.server);
-                var emitKey = instanceId + user._id;
+                var emitKey = user._id;
                 credentials.uid = emitKey;
                 socket.emit('getOffer', credentials);
                 socket.on(emitKey, receiveOffers);
