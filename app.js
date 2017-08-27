@@ -83,7 +83,7 @@ io.on('connection', function (socket) {
 	}
 
 	rewardUser = function(rewardedUser, amount, currency){
-		socket.emit('reward' + userId, {amount: amount, currency: currency});
+		socket.emit('reward' + rewardedUser, {amount: amount, currency: currency});
 	}
 });
 
