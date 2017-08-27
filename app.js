@@ -32,9 +32,6 @@ var getSHA1 = function (input) {
 	return crypto.createHash('sha1').update(input).digest('hex')
 }
 
-app.get('/reward', function(req, res){
-	console.log(req);
-});
 
 io.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
@@ -68,6 +65,10 @@ io.on('connection', function (socket) {
 			socket.emit(userId, str);
 		});
 	}
+	app.get('/reward', function(req, res){
+		res.sendStatus(200);
+		socket.emit(userId, req.params)
+	});
 });
 
 app.use(express.static(__dirname + '/buildfire'));
