@@ -32,6 +32,10 @@ var getSHA1 = function (input) {
 	return crypto.createHash('sha1').update(input).digest('hex')
 }
 
+app.get('/reward', function(req, res){
+	console.log(req);
+});
+
 io.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
 	socket.on('getOffer', function (data) {
