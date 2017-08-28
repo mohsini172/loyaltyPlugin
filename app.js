@@ -7,17 +7,8 @@ var crypto = require('crypto');
 
 
 //params for requesting the offerwall
-var appid = "appid=106186&"
-var format = "format=json&"
-var googleID = "google_ad_id=2E7CE4B3-F68A-44D9-A923-F4E48D92B31E&google_ad_id_limited_tracking_enabled=false&"
-var locale = "locale=en&os_version=9.0&"
-var timestamp = "timestamp=1503159710&"
-var uid = "uid=player&"
-var hashkey = "hashkey=b4dd3ecf31ddda9d3bbac29abf2f6a933419fb1f";
-var apiKey = "3c548e669647a891d9fd543a12721216897ca63b";
-var userId = "";
 var security_token = "332349b0cb9bd37c7ec67095de9046fb";
-
+var userId = "";
 
 
 var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -42,6 +33,13 @@ app.get('/reward', function (req, res) {
 	var rewardedUser = req.query.uid;
 	var amount = req.query.amount;
 	var currency = req.query.currency_id;
+	var sid = req.query.sid;
+	sid_string = ''
+    sid_string += security_token;
+    sid_string += rewardedUser;
+	sid_string += amount;
+	console.log(getSHA1(sid_string), sid);
+	
 	rewardUser(rewardedUser, amount, currency);
 });
 
@@ -61,17 +59,18 @@ io.on('connection', function (socket) {
 			appid = 'appid=' + data.appid + '&';
 			apiKey = data.apiKey;
 		}
-		uid = 'uid=' + data.uid + '&';
-		var ip = (socket.handshake.address != '127.0.0.1') ? ('ip=' + socket.handshake.address + '&') : '';
 		userId = data.uid;
-		googleID = "google_ad_id=" + data.google_ad_id + "&";
-		tracker = "google_ad_id_limited_tracking_enabled=" + data.google_ad_id_limited_tracking_enabled + "&";
+		//params for accessing fyber api
+		var uid = 'uid=' + data.uid + '&';
+		var ip = (socket.handshake.address != '127.0.0.1') ? ('ip=' + socket.handshake.address + '&') : '';
+		var format = "format=json&"
+		var locale = "locale=en&os_version=5.0&"
+		var googleID = "google_ad_id=" + data.google_ad_id + "&";
+		var tracker = "google_ad_id_limited_tracking_enabled=" + data.google_ad_id_limited_tracking_enabled + "&";
 		var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
 		var params = appid + format + googleID + tracker + ip + locale + timestamp + uid;
-		var hashkey = getSHA1(params + apiKey);
-		hashkey = 'hashkey=' + hashkey;
+		var hashkey = 'hashkey=' + getSHA1(params + apiKey);
 		params = params + hashkey;
-		console.log(params);
 		options.path += params;
 		http.request(options, callback).end();
 	});
@@ -85,14 +84,12 @@ io.on('connection', function (socket) {
 
 		//the whole response has been recieved, so we just print it out here
 		response.on('end', function () {
-			console.log("repsonse aaya hai");
 			socket.emit(userId, str);
 		});
 	}
 
 	rewardUser = function (rewardedUser, amount, currency) {
 		var emitter = 'reward' + rewardedUser;
-		console.log(emitter);
 		socket.emit(emitter, { amount: amount, currency: currency });
 	}
 });
