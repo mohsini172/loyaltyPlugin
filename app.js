@@ -21,12 +21,12 @@ var security_token = "332349b0cb9bd37c7ec67095de9046fb";
 
 
 var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var server_ip_address = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+var server_ip_address = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
 // start server on the specified port and binding host
-server.listen(server_port, server_ip_address, function() {
-  // print a message when the server starts listening
-  console.log("server starting on " + server_port);
+server.listen(server_port, server_ip_address, function () {
+	// print a message when the server starts listening
+	console.log("server starting on " + server_port);
 });
 
 var getSHA1 = function (input) {
@@ -34,10 +34,10 @@ var getSHA1 = function (input) {
 }
 
 //universal function for emitting data to socket connection later it will replaced by socket on connection event
-var rewardUser = (rewardedUser, amount, currency)=>{};
+var rewardUser = (rewardedUser, amount, currency) => { };
 
 //callback request when offer is completed
-app.get('/reward', function(req, res){
+app.get('/reward', function (req, res) {
 	res.sendStatus(200);
 	var rewardedUser = req.query.uid;
 	var amount = req.query.amount;
@@ -52,14 +52,22 @@ app.get('/reward', function(req, res){
 io.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
 	socket.on('getOffer', function (data) {
-		appid = 'appid='+data.appid + '&';
+		//sperate offer for android and ios
+		if (data.os == 'iOS' || data.os == 'macOS') {
+			appid = 'appid=' + data.appid + '&';
+			apiKey = apiKeyios
+		}
+		else {
+			appid = 'appid=' + data.appid + '&';
+			apiKey = data.apiKey;
+		}
 		uid = 'uid=' + data.uid + '&';
+		var ip = (socket.handshake.address != '127.0.0.1') ? ('ip=' + socket.handshake.address + '&') : '';
 		userId = data.uid;
-		googleID = "google_ad_id="+data.google_ad_id+"&";
-		tracker = "google_ad_id_limited_tracking_enabled="+data.google_ad_id_limited_tracking_enabled+"&";
-		apiKey = data.apiKey;
+		googleID = "google_ad_id=" + data.google_ad_id + "&";
+		tracker = "google_ad_id_limited_tracking_enabled=" + data.google_ad_id_limited_tracking_enabled + "&";
 		var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
-		var params = appid + format + googleID + tracker + locale + timestamp + uid;
+		var params = appid + format + googleID + tracker + ip + locale + timestamp + uid;
 		var hashkey = getSHA1(params + apiKey);
 		hashkey = 'hashkey=' + hashkey;
 		params = params + hashkey;
@@ -82,10 +90,10 @@ io.on('connection', function (socket) {
 		});
 	}
 
-	rewardUser = function(rewardedUser, amount, currency){
+	rewardUser = function (rewardedUser, amount, currency) {
 		var emitter = 'reward' + rewardedUser;
 		console.log(emitter);
-		socket.emit(emitter, {amount: amount, currency: currency});
+		socket.emit(emitter, { amount: amount, currency: currency });
 	}
 });
 

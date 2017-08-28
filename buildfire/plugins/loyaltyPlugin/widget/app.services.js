@@ -285,7 +285,7 @@
         }
       };
     }])
-    .factory('FyberAPI', ['$http', 'Context', function ($http, Context) {
+    .factory('FyberAPI', ['LoyaltyAPI', '$http', 'Context', function (LoyaltyAPI, $http, Context) {
       var instanceId = Context.getContext().instanceId;
       var userid = null;
       var credentials = {};
@@ -334,11 +334,17 @@
                 socket = io(credentials.server);
                 var emitKey = user._id;
                 credentials.uid = emitKey;
+                credentials.os = Detect.OS;
                 socket.emit('getOffer', credentials);
                 socket.on(emitKey, receiveOffers);
                 var onreward = 'reward' + emitKey;
                 socket.on(onreward, (data) => {
-                  console.log(data);
+                  LoyaltyAPI.addLoyaltyPoints(user._id, user.userToken, instanceId, '54321', data.amount)
+                    .then((success) => {
+                      console.log(success)
+                    }, (error) => {
+                      console.log(error)
+                    });
                 });
                 recieveCallback = callback;
               }

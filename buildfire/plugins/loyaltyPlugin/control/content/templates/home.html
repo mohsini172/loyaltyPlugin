@@ -1,8 +1,7 @@
 <div class="loyalty-plugin">
   <div class="item clearfix row">
     <div class="col-xs-12 margin-top-five" ng-if="ContentHome.needToLoginInCP">
-      <div class="alert alert-sm text-center alert-danger">Please make sure
-        you are logged In
+      <div class="alert alert-sm text-center alert-danger">Please make sure you are logged In
       </div>
     </div>
   </div>
@@ -21,9 +20,7 @@
   <hr class="none">
   <div class="item clearfix row">
     <div class="main col-md-12 pull-right">
-    <textarea id="text" ui-tinymce="ContentHome.bodyWYSIWYGOptions"
-              class="form-control" rows="5" width="100%"
-              ng-model="ContentHome.data.content.description"></textarea>
+      <textarea id="text" ui-tinymce="ContentHome.bodyWYSIWYGOptions" class="form-control" rows="5" width="100%" ng-model="ContentHome.data.content.description"></textarea>
     </div>
   </div>
   <hr class="none">
@@ -32,9 +29,7 @@
       <span>Points per Purchase</span>
     </div>
     <div class="main col-xs-9 pull-right">
-      <input type="number" class="form-control"
-             placeholder="Points per Purchase"
-             ng-model="ContentHome.data.pointsPerVisit">
+      <input type="number" class="form-control" placeholder="Points per Purchase" ng-model="ContentHome.data.pointsPerVisit">
     </div>
   </div>
   <hr class="none">
@@ -43,8 +38,7 @@
       <span>Points per Dollar</span>
     </div>
     <div class="main col-xs-9 pull-right">
-      <input type="number" class="form-control" placeholder="Points per Dollar"
-             ng-model="ContentHome.data.pointsPerDollar">
+      <input type="number" class="form-control" placeholder="Points per Dollar" ng-model="ContentHome.data.pointsPerDollar">
     </div>
   </div>
   <hr class="none">
@@ -53,8 +47,7 @@
       <span>Daily Limit</span>
     </div>
     <div class="main col-xs-9 pull-right">
-      <input type="number" class="form-control" placeholder="Daily Limit"
-             ng-model="ContentHome.data.dailyLimit">
+      <input type="number" class="form-control" placeholder="Daily Limit" ng-model="ContentHome.data.dailyLimit">
     </div>
   </div>
   <hr class="none">
@@ -63,8 +56,7 @@
       <span>Total Limit</span>
     </div>
     <div class="main col-xs-9 pull-right">
-      <input type="number" class="form-control" placeholder="Total Limit"
-             ng-model="ContentHome.data.totalLimit">
+      <input type="number" class="form-control" placeholder="Total Limit" ng-model="ContentHome.data.totalLimit">
     </div>
   </div>
   <hr class="none">
@@ -73,9 +65,8 @@
       <span>Add Points Passcode</span>
     </div>
     <div class="main col-xs-9 pull-right">
-      <input type="text" class="form-control"
-             placeholder="Add Points Passcode"
-             ng-model="ContentHome.data.redemptionPasscode" maxlength="5">
+      <input type="text" class="form-control" placeholder="Add Points Passcode" ng-model="ContentHome.data.redemptionPasscode"
+        maxlength="5">
     </div>
   </div>
   <hr>
@@ -95,17 +86,13 @@
   </div>
   <hr>
   <div class="item clearfix">
-    <div ng-if="ContentHome.loyaltyRewards.length"
-        class="tab-order draggable-list-view wide-list has-btn-link border-grey border-radius-four">
+    <div ng-if="ContentHome.loyaltyRewards.length" class="tab-order draggable-list-view wide-list has-btn-link border-grey border-radius-four">
       <div>
-        <div ui-sortable="ContentHome.rewardsSortableOptions"
-             ng-model="ContentHome.loyaltyRewards">
-          <div class="d-item double-line square-icon clearfix"
-               ng-repeat="reward in ContentHome.loyaltyRewards">
+        <div ui-sortable="ContentHome.rewardsSortableOptions" ng-model="ContentHome.loyaltyRewards">
+          <div class="d-item double-line square-icon clearfix" ng-repeat="reward in ContentHome.loyaltyRewards">
             <span class="icon icon-menu pull-left cursor-grab"></span>
             <div class="media-holder pull-left">
-              <img load-image="1x1" data-final-src="{{reward.listImage | getImageUrl : 60:60}}"
-                   ng-if="reward.listImage">
+              <img load-image="1x1" data-final-src="{{reward.listImage | getImageUrl : 60:60}}" ng-if="reward.listImage">
               <img src="../../../../styles/media/holder-1x1.png" ng-if="!reward.listImage">
             </div>
             <div class="copy pull-right">
@@ -117,9 +104,7 @@
                 <span class="title ellipsis pull-left">{{reward.pointsToRedeem}} Points</span>
               </div>
               <div class="pull-right padding-top-fifteen">
-                <span
-                    class="btn-icon btn-delete-icon btn-danger transition-third"
-                    ng-click="ContentHome.removeLoyalty(reward._id, $index)"></span>
+                <span class="btn-icon btn-delete-icon btn-danger transition-third" ng-click="ContentHome.removeLoyalty(reward._id, $index)"></span>
               </div>
             </div>
           </div>
@@ -137,71 +122,79 @@
         <span>Callback Server</span>
       </div>
       <div class="main col-xs-9 pull-right">
-        <input type="text" class="form-control"
-              placeholder="server for after completing the offer"
-              ng-model="ContentHome.credentials.server">
+        <input type="text" class="form-control" placeholder="server for after completing the offer" ng-model="ContentHome.credentials.server">
       </div>
     </div>
     <hr class="none">
     <div class="item clearfix row">
       <div class="labels col-xs-3 pull-left">
-        <span>App Id</span>
+        <span>App Id(Android)</span>
       </div>
       <div class="main col-xs-9 pull-right">
-        <input type="text" class="form-control"
-              placeholder="Application ID of fyber app"
-              ng-model="ContentHome.credentials.appid">
+        <input type="text" class="form-control" placeholder="Application ID of fyber app" ng-model="ContentHome.credentials.appid">
       </div>
     </div>
     <hr class="none">
     <div class="item clearfix row">
-        <div class="labels col-xs-3 pull-left">
-          <span>Google Ad ID</span>
-        </div>
-        <div class="main col-xs-9 pull-right">
-          <input type="text" class="form-control"
-                placeholder="Ad ID provided by google"
-                ng-model="ContentHome.credentials.google_ad_id">
-        </div>
+      <div class="labels col-xs-3 pull-left">
+        <span>App Id(IOS)</span>
+      </div>
+      <div class="main col-xs-9 pull-right">
+        <input type="text" class="form-control" placeholder="Application ID of fyber app" ng-model="ContentHome.credentials.appidios">
+      </div>
     </div>
     <hr class="none">
     <div class="item clearfix row">
-        <div class="labels col-xs-3 pull-left">
-          <span>Enalble Limited Ad Tracking</span>
-        </div>
-        <div class="main col-xs-9 pull-right">
-          <input type="radio" ng-model = "ContentHome.credentials.google_ad_id_limited_tracking_enabled" name="Ad_Tracking" value="true"> Yes
-          <input type="radio" ng-model = "ContentHome.credentials.google_ad_id_limited_tracking_enabled" name="Ad_Tracking" value="false"> No
-        </div>
+      <div class="labels col-xs-3 pull-left">
+        <span>Google Ad ID</span>
+      </div>
+      <div class="main col-xs-9 pull-right">
+        <input type="text" class="form-control" placeholder="Ad ID provided by google" ng-model="ContentHome.credentials.google_ad_id">
+      </div>
     </div>
     <hr class="none">
     <div class="item clearfix row">
-        <div class="labels col-xs-3 pull-left">
-          <span>Locale</span>
-        </div>
-        <div class="main col-xs-9 pull-right">
-          <input type="text" class="form-control"
-                placeholder="en"
-                ng-model="ContentHome.credentials.locale">
-        </div>
+      <div class="labels col-xs-3 pull-left">
+        <span>Enalble Limited Ad Tracking</span>
+      </div>
+      <div class="main col-xs-9 pull-right">
+        <input type="radio" ng-model="ContentHome.credentials.google_ad_id_limited_tracking_enabled" name="Ad_Tracking" value="true">        Yes
+        <input type="radio" ng-model="ContentHome.credentials.google_ad_id_limited_tracking_enabled" name="Ad_Tracking" value="false">        No
+      </div>
     </div>
-    
     <hr class="none">
     <div class="item clearfix row">
-        <div class="labels col-xs-3 pull-left">
-          <span>API key</span>
-        </div>
-        <div class="main col-xs-9 pull-right">
-          <input type="text" class="form-control"
-                placeholder="Locale"
-                ng-model="ContentHome.credentials.apiKey">
-        </div>
+      <div class="labels col-xs-3 pull-left">
+        <span>Locale</span>
+      </div>
+      <div class="main col-xs-9 pull-right">
+        <input type="text" class="form-control" placeholder="en" ng-model="ContentHome.credentials.locale">
+      </div>
+    </div>
+
+    <hr class="none">
+    <div class="item clearfix row">
+      <div class="labels col-xs-3 pull-left">
+        <span>API key(Android)</span>
+      </div>
+      <div class="main col-xs-9 pull-right">
+        <input type="text" class="form-control" placeholder="API key" ng-model="ContentHome.credentials.apiKey">
+      </div>
+    </div>
+    <hr class="none">
+    <div class="item clearfix row">
+      <div class="labels col-xs-3 pull-left">
+        <span>API key(IOS)</span>
+      </div>
+      <div class="main col-xs-9 pull-right">
+        <input type="text" class="form-control" placeholder="API key" ng-model="ContentHome.credentials.apiKeyios">
+      </div>
     </div>
     <hr class="none">
     <div class="item clearfix row">
       <div class="main col-md-9 pull-right padding-left-zero row">
         <div class="pull-left inner-main col-md-8 padding-zero">
-          <input type="submit" class="btn btn-success stretch" placeholder="Save Credentials"/>
+          <input type="submit" class="btn btn-success stretch" placeholder="Save Credentials" />
         </div>
       </div>
     </div>
