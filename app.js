@@ -38,9 +38,10 @@ app.get('/reward', function (req, res) {
     sid_string += security_token;
     sid_string += rewardedUser;
 	sid_string += amount;
-	console.log(getSHA1(sid_string), sid);
-	
-	rewardUser(rewardedUser, amount, currency);
+	sid_string = getSHA1(sid_string);
+	if(sid_string == sid){
+		rewardUser(rewardedUser, amount, currency);
+	}
 });
 
 
