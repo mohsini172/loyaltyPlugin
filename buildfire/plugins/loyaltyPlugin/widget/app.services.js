@@ -285,7 +285,7 @@
         }
       };
     }])
-    .factory('FyberAPI', ['LoyaltyAPI', '$http', 'Context', function (LoyaltyAPI, $http, Context) {
+    .factory('FyberAPI', ['LoyaltyAPI', 'ViewStack', '$rootScope', '$http', 'Context', function (LoyaltyAPI, ViewStack, $rootScope, $http, Context) {
       var instanceId = Context.getContext().instanceId;
       var userid = null;
       var credentials = {};
@@ -308,22 +308,6 @@
       function getAds(callback) {
         buildfire.auth.getCurrentUser((err, user) => {
           if (user) {
-            // uid = 'uid=' + instanceId + user._id + '&';
-            // var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
-            // var params = appid + format + googleID + locale + timestamp + uid;
-            // var hashkey = sha1(params + apiKey);
-            // hashkey = 'hashkey=' + hashkey;
-            // params = params + hashkey;
-            // var url = 'http://api.fyber.com/feed/v1/offers.json?' + params;
-            // console.log(params);
-            // $http({
-            //   method: 'GET',
-            //   url: url
-            // }).then(function (data) {
-            //   console.log(data);
-            // }, function (err) {
-            //   console.log(err);
-            // })
             //getting saved credentials
             buildfire.datastore.get("credentials", (err, data) => {
               if (err) {
@@ -339,9 +323,12 @@
                 socket.on(emitKey, receiveOffers);
                 var onreward = 'reward' + emitKey;
                 socket.on(onreward, (data) => {
-                  LoyaltyAPI.addLoyaltyPoints(user._id, user.userToken, instanceId, '54321', data.amount)
+                  LoyaltyAPI.addLoyaltyPoints(user._id, user.userToken, instanceId, '54321', parseInt(data.amount))
                     .then((success) => {
-                      console.log(success)
+                      $rootScope.$broadcast('POINTS_ADDED', parseInt(data.amount));
+                      ViewStack.push({
+                        template: 'Offerwall'
+                      });
                     }, (error) => {
                       console.log(error)
                     });
