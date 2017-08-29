@@ -52,6 +52,7 @@ app.get('/reward', function (req, res) {
 io.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
 	socket.on('getOffer', function (data) {
+		var appid="";
 		//sperate offer for android and ios
 		if (data.os == 'iOS' || data.os == 'macOS') {
 			appid = 'appid=' + data.appidios + '&';
