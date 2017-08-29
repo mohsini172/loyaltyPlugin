@@ -64,6 +64,7 @@ io.on('connection', function (socket) {
 		//params for accessing fyber api
 		var uid = 'uid=' + data.uid + '&';
 		var ip = (socket.handshake.address != '127.0.0.1') ? ('ip=' + socket.handshake.address + '&') : '';
+		console.log(ip);
 		var format = "format=json&"
 		var locale = "locale=en&os_version=9.0&"
 		var googleID = "google_ad_id=" + data.google_ad_id + "&";
