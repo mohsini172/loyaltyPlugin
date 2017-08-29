@@ -53,8 +53,8 @@ io.on('connection', function (socket) {
 	socket.on('getOffer', function (data) {
 		//sperate offer for android and ios
 		if (data.os == 'iOS' || data.os == 'macOS') {
-			appid = 'appid=' + data.appid + '&';
-			apiKey = apiKeyios
+			appid = 'appid=' + data.appidios + '&';
+			apiKey = data.apiKeyios
 		}
 		else {
 			appid = 'appid=' + data.appid + '&';
@@ -65,7 +65,7 @@ io.on('connection', function (socket) {
 		var uid = 'uid=' + data.uid + '&';
 		var ip = (socket.handshake.address != '127.0.0.1') ? ('ip=' + socket.handshake.address + '&') : '';
 		var format = "format=json&"
-		var locale = "locale=en&os_version=5.0&"
+		var locale = "locale=en&os_version=9.0&"
 		var googleID = "google_ad_id=" + data.google_ad_id + "&";
 		var tracker = "google_ad_id_limited_tracking_enabled=" + data.google_ad_id_limited_tracking_enabled + "&";
 		var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
