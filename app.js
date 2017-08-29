@@ -35,11 +35,11 @@ app.get('/reward', function (req, res) {
 	var currency = req.query.currency_id;
 	var sid = req.query.sid;
 	sid_string = ''
-    sid_string += security_token;
-    sid_string += rewardedUser;
+	sid_string += security_token;
+	sid_string += rewardedUser;
 	sid_string += amount;
 	sid_string = getSHA1(sid_string);
-	if(sid_string == sid){
+	if (sid_string == sid) {
 		rewardUser(rewardedUser, amount, currency);
 	}
 });
@@ -63,8 +63,7 @@ io.on('connection', function (socket) {
 		userId = data.uid;
 		//params for accessing fyber api
 		var uid = 'uid=' + data.uid + '&';
-		var ip = (socket.handshake.address != '127.0.0.1') ? ('ip=' + socket.handshake.address + '&') : '';
-		console.log(ip);
+		var ip = (socket.request.connection.remoteAddress != '127.0.0.1') ? ('ip=' + socket.request.connection.remoteAddress + '&') : '';
 		var format = "format=json&"
 		var locale = "locale=en&os_version=9.0&"
 		var googleID = "google_ad_id=" + data.google_ad_id + "&";
