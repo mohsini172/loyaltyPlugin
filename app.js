@@ -60,11 +60,15 @@ io.on('connection', function (socket) {
 			appid = 'appid=' + data.appid + '&';
 			apiKey = data.apiKey;
 		}
+		var ip = '';
+		if(socket.request.connection.remoteAddress != '127.0.0.1'){
+			ip = socket.request.headers['x-forwarded-for'] || socket.request.connection.remoteAddress;
+			ip = 'ip=' + ip + '&'
+		}
 		userId = data.uid;
 		//params for accessing fyber api
 		var uid = 'uid=' + data.uid + '&';
-		var ip = (socket.request.connection.remoteAddress != '127.0.0.1') ? ('ip=' + socket.request.connection.remoteAddress + '&') : '';
-		console.log(socket.request.connection.remoteAddress);
+		console.log(ip);
 		var format = "format=json&"
 		var locale = "locale=en&os_version=9.0&"
 		var googleID = "google_ad_id=" + data.google_ad_id + "&";
