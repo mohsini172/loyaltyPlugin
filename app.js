@@ -8,8 +8,9 @@ var crypto = require('crypto');
 
 //params for requesting the offerwall
 var security_token = "332349b0cb9bd37c7ec67095de9046fb";
+var security_token_ios = "8032a4560f974357f92acdfa4a97a56d"
 var userId = "";
-
+var os;
 
 var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var server_ip_address = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
@@ -35,7 +36,7 @@ app.get('/reward', function (req, res) {
 	var currency = req.query.currency_id;
 	var sid = req.query.sid;
 	sid_string = ''
-	sid_string += security_token;
+	sid_string += (os == 'iOS' || os == 'macOS') ? security_token_ios : security_token;
 	sid_string += rewardedUser;
 	sid_string += amount;
 	sid_string = getSHA1(sid_string);
@@ -61,7 +62,7 @@ io.on('connection', function (socket) {
 			apiKey = data.apiKey;
 		}
 		var ip = '';
-		if(socket.request.connection.remoteAddress != '127.0.0.1'){
+		if (socket.request.connection.remoteAddress != '127.0.0.1') {
 			ip = socket.request.headers['x-forwarded-for'] || socket.request.connection.remoteAddress;
 			ip = 'ip=' + ip + '&'
 		}
@@ -69,6 +70,7 @@ io.on('connection', function (socket) {
 		//params for accessing fyber api
 		var uid = 'uid=' + data.uid + '&';
 		console.log(ip);
+		os = data.os;
 		var format = "format=json&"
 		var locale = "locale=en&os_version=9.0&"
 		var googleID = "google_ad_id=" + data.google_ad_id + "&";
