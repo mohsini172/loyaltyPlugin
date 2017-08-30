@@ -5,11 +5,14 @@
 		</div>
 		<span>{{offer.title}}</span>
 	</div> -->
-	<h4 class="pad-5-left" ng-if = "WidgetOfferwall.offers.length>0">Available offers</h4>
-	<h4 class="pad-5-left" ng-if = "WidgetOfferwall.offers.length<=0">No offers available at this time</h4>
+	<h4 class="pad-5-left" ng-if="WidgetOfferwall.offers.length>0">Available offers</h4>
+	<h4 class="pad-5-left" ng-if="WidgetOfferwall.offers.length<=0">No offers available at this time</h4>
+	<div class="col-xs-12 margin-top-five">
+		<div class="alert alert-sm text-center alert-danger" ng-if="WidgetOfferwall.isError">{{WidgetOfferwall.error_message}}</div>
+	</div>
 	<ul class="list-group">
 		<li ng-repeat="offer in WidgetOfferwall.offers" class="list-group-item">
-			<a target="_blank" ng-click = "WidgetOfferwall.openOffer(offer.link)">
+			<a target="_blank" ng-click="WidgetOfferwall.openOffer(offer.link)">
 				<div class="row">
 					<div class="col-xs-3 no-pad pad-5-left">
 						<img ng-src="{{WidgetOfferwall.trustSrc(offer.thumbnail.lowres)}}" alt="">

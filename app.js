@@ -25,6 +25,16 @@ var getSHA1 = function (input) {
 	return crypto.createHash('sha1').update(input).digest('hex')
 }
 
+var varifyParams = function(required_params, params){
+	for(var i in required_params){
+		var parameter = required_params[i];
+		if(!params[parameter]){
+			return false;
+		}
+	}
+	return true;
+}
+
 //universal function for emitting data to socket connection later it will replaced by socket on connection event
 var rewardUser = (rewardedUser, amount, currency) => { };
 
@@ -52,6 +62,9 @@ app.get('/reward', function (req, res) {
 io.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
 	socket.on('getOffer', function (data) {
+		if(!varifyParams(['os', 'appid', 'appidios', 'apiKeyios', 'apiKey', 'uid', 'locale', 'google_ad_id', 'google_ad_id_limited_tracking_enabled'], data)){
+			return null;
+		}
 		var appid="";
 		//sperate offer for android and ios
 		if (data.os == 'iOS' || data.os == 'macOS') {
@@ -73,7 +86,7 @@ io.on('connection', function (socket) {
 		console.log(ip);
 		os = data.os;
 		var format = "format=json&"
-		var locale = "locale=en&os_version=9.0&"
+		var locale = "locale="+data.locale+"&os_version=9.0&"
 		var googleID = "google_ad_id=" + data.google_ad_id + "&";
 		var tracker = "google_ad_id_limited_tracking_enabled=" + data.google_ad_id_limited_tracking_enabled + "&";
 		var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';

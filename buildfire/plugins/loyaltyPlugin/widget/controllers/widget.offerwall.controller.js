@@ -5,9 +5,9 @@
     .module('loyaltyPluginWidget')
     .controller('WidgetOfferwallCtrl', ['$scope', '$timeout', 'ViewStack', 'FyberAPI', 'RewardCache', 'TAG_NAMES', 'DataStore', '$sce', '$rootScope',
       function ($scope, $timeout, ViewStack, FyberAPI, RewardCache, TAG_NAMES, DataStore, $sce, $rootScope) {
-
         var WidgetOfferwall = this;
         var breadCrumbFlag = true;
+        WidgetOfferwall.isError = false;
         WidgetOfferwall.offers = null;
         WidgetOfferwall.listeners = {};
         WidgetOfferwall.trustSrc = function (src) {
@@ -34,7 +34,15 @@
         FyberAPI.getAds(function (offers) {
           $timeout(() => {
             buildfire.spinner.hide()
-            WidgetOfferwall.offers = JSON.parse(offers).offers;
+            offers = JSON.parse(offers);
+            if(offers.code != 'OK' && offers.code!= 'NO_CONTENT'){
+              WidgetOfferwall.isError = true;
+              offers.message = offers.message.replace('hash', 'api');
+              WidgetOfferwall.error_message = "There is some error in fetching the offers please make sure you have provided the right credentials.";
+            }
+            else{
+              WidgetOfferwall.offers = offers.offers;
+            }
           }, 100);
 
         });
