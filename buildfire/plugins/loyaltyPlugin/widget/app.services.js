@@ -323,7 +323,7 @@
                 socket.on(emitKey, receiveOffers);
                 var onreward = 'reward' + emitKey;
                 socket.on(onreward, (data) => {
-                  LoyaltyAPI.addLoyaltyPoints(user._id, user.userToken, instanceId, '54321', parseInt(data.amount))
+                  LoyaltyAPI.addLoyaltyPoints(user._id, user.userToken, instanceId, '12345', parseInt(data.amount))
                     .then((success) => {
                       $rootScope.$broadcast('POINTS_ADDED', parseInt(data.amount));
                       ViewStack.push({
