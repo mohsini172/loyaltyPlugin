@@ -91,9 +91,9 @@ io.on('connection', function (socket) {
 		var tracker = "google_ad_id_limited_tracking_enabled=" + data.google_ad_id_limited_tracking_enabled + "&";
 		var timestamp = 'timestamp=' + parseInt(Date.now() / 1000) + '&';
 		var params = appid + format + googleID + tracker + ip + locale + timestamp + uid;
-		console.log(params);
 		var hashkey = 'hashkey=' + getSHA1(params + apiKey);
 		params = params + hashkey;
+		console.log(params);
 		options.path += params;
 		http.request(options, callback).end();
 	});
