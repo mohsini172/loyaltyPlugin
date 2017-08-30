@@ -66,6 +66,7 @@ io.on('connection', function (socket) {
 			return null;
 		}
 		var appid="";
+		var apiKey="";
 		//sperate offer for android and ios
 		if (data.os == 'iOS' || data.os == 'macOS') {
 			appid = 'appid=' + data.appidios + '&';
@@ -93,7 +94,6 @@ io.on('connection', function (socket) {
 		var params = appid + format + googleID + tracker + ip + locale + timestamp + uid;
 		var hashkey = 'hashkey=' + getSHA1(params + apiKey);
 		params = params + hashkey;
-		console.log(params);
 		options.path += params;
 		http.request(options, callback).end();
 	});
