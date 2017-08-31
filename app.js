@@ -62,9 +62,6 @@ app.get('/reward', function (req, res) {
 io.on('connection', function (socket) {
 	socket.emit('news', { hello: 'world' });
 	socket.on('getOffer', function (data) {
-		if(!varifyParams(['os', 'appid', 'appidios', 'apiKeyios', 'apiKey', 'uid', 'locale', 'google_ad_id', 'google_ad_id_limited_tracking_enabled'], data)){
-			return null;
-		}
 		var appid="";
 		var apiKey="";
 		//sperate offer for android and ios
@@ -94,7 +91,8 @@ io.on('connection', function (socket) {
 		var params = appid + format + googleID + tracker + ip + locale + timestamp + uid;
 		var hashkey = 'hashkey=' + getSHA1(params + apiKey);
 		params = params + hashkey;
-		options.path += params;
+		options.path = '/feed/v1/offers.json?' + params;
+		console.log(options);
 		http.request(options, callback).end();
 	});
 	callback = function (response) {
@@ -122,7 +120,6 @@ app.use(express.static(__dirname + '/buildfire'));
 
 
 
-//The url we want is: 'www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
 var options = {
 	host: 'api.fyber.com',
 	path: '/feed/v1/offers.json?'
