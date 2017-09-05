@@ -33,7 +33,7 @@
               plugin.pluginId = row.id;
               plugin.instanceId = row.data.instanceId;
               plugin.name = row.data.title;
-              plugin.folder = row.data._buildfire.pluginType.result[0].folderName;
+              plugin.folderName = row.data._buildfire.pluginType.result[0].folderName;
               plugins.push(plugin);
             }
             $timeout(function(){
