@@ -14,7 +14,7 @@
           appId: context.appId,
           name: context.pluginId,
           pointsPerVisit: 1,
-          pointsPerDollar: 0,
+          pointsPerDollar: 1,
           totalLimit: 5000,
           dailyLimit: 1000,
           image: []
