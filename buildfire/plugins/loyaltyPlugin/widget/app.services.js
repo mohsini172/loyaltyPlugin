@@ -321,6 +321,8 @@
                 credentials.os = Detect.OS;
                 socket.emit('getOffer', credentials);
                 socket.on(emitKey, receiveOffers);
+                console.log('---------------------------Username----------------------------');
+                console.log(emitKey);
                 var onreward = 'reward' + emitKey;
                 socket.on(onreward, (data) => {
                   LoyaltyAPI.addLoyaltyPoints(user._id, user.userToken, instanceId, '12345', parseInt(data.amount))
