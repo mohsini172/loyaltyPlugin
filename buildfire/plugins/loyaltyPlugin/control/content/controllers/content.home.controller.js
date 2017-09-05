@@ -20,6 +20,32 @@
           image: []
         };
 
+        ContentHome.plugins = [];
+
+        //getting list of all plugins
+        buildfire.pluginInstance.search({}, function (error, instances) {
+          try {
+            instances = instances.result;
+            var plugins = [];
+            for (var i in instances) {
+              var plugin = {};
+              var row = instances[i];
+              plugin.pluginId = row.id;
+              plugin.instanceId = row.data.instanceId;
+              plugin.name = row.data.title;
+              plugin.folder = row.data._buildfire.pluginType.result[0].folderName;
+              plugins.push(plugin);
+            }
+            $timeout(function(){
+              ContentHome.plugins = plugins;
+            }, 100)
+            console.log(ContentHome.plugins);
+          }
+          catch(err){
+            console.log(err);
+          }
+        });
+
         //Scroll current view to top when page loaded.
         buildfire.navigation.scrollTop();
 
@@ -307,22 +333,32 @@
           }
         };
 
-        //getting saved credentials
-        buildfire.datastore.get( "credentials", (err, data)=>{
-          if(err){
-            buildfire.notifications.alert({message: "No credentials found"}, ()=>{});
+        $scope.$watch('ContentHome.plugins', function(plugins){
+          if(plugins.length > 0 && ContentHome.selectedPlugin){
+            $timeout(function(){
+              ContentHome.credentials.plugin = ContentHome.selectedPlugin;
+            }, 100)
           }
-          else
+        });
+
+        //getting saved credentials
+        buildfire.datastore.get("credentials", (err, data) => {
+          if (err) {
+            buildfire.notifications.alert({ message: "No credentials found" }, () => { });
+          }
+          else{
             ContentHome.credentials = data.data;
+            ContentHome.selectedPlugin = data.data.plugin;
+          }
         });
 
         //store credentials
         ContentHome.saveCredentials = function () {
           buildfire.datastore.save(ContentHome.credentials, "credentials", (err, status) => {
             if (err)
-              buildfire.notifications.alert({message: "There was an error in saving"}, ()=>{});
+              buildfire.notifications.alert({ message: "There was an error in saving" }, () => { });
             else
-              buildfire.notifications.alert({message: "Your data was successfully saved"}, ()=>{});
+              buildfire.notifications.alert({ message: "Your data was successfully saved" }, () => { });
           })
         }
         /*

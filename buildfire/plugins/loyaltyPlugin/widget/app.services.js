@@ -326,9 +326,17 @@
                   LoyaltyAPI.addLoyaltyPoints(user._id, user.userToken, instanceId, '12345', parseInt(data.amount))
                     .then((success) => {
                       $rootScope.$broadcast('POINTS_ADDED', parseInt(data.amount));
-                      ViewStack.push({
-                        template: 'Offerwall'
-                      });
+                      var nPlugin = credentials.plugin;
+                      if (nPlugin) {
+                        nPlugin = JSON.parse(nPlugin);
+                        nPlugin.title = nPlugin.name;
+                        buildfire.navigation.navigateTo(nPlugin);
+                      }
+                      else{
+                        ViewStack.push({
+                          template: 'Offerwall'
+                        });
+                      }
                     }, (error) => {
                       console.log(error)
                     });
