@@ -329,16 +329,10 @@
                     .then((success) => {
                       $rootScope.$broadcast('POINTS_ADDED', parseInt(data.amount));
                       var nPlugin = credentials.plugin;
-                      if (nPlugin) {
-                        nPlugin = JSON.parse(nPlugin);
-                        nPlugin.title = nPlugin.name;
-                        buildfire.navigation.navigateTo(nPlugin);
-                      }
-                      else{
-                        ViewStack.push({
-                          template: 'Offerwall'
-                        });
-                      }
+                      ViewStack.push({
+                        template: 'Offerwall'
+                      });
+
                     }, (error) => {
                       console.log(error)
                     });

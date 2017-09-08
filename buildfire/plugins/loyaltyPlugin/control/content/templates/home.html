@@ -162,18 +162,7 @@
         <input type="text" required class="form-control" placeholder="API key" ng-model="ContentHome.credentials.apiKeyios">
       </div>
     </div>
-    <hr class="none">
-    <div class="item clearfix row">
-      <div class="labels col-xs-3 pull-left">
-        <span>Plugin on completion</span>
-      </div>
-      <div class="main col-xs-9 pull-right">
-        <select class = "form-control" ng-model = "ContentHome.credentials.plugin">
-          <option value="" disabled>Select Plugin to navigate after completing the offer</option>
-          <option ng-selected = "ContentHome.credentials.plugin == plugin" ng-repeat = "plugin in ContentHome.plugins" value="{{plugin}}">{{plugin.name}}</option>
-        </select>
-      </div>
-    </div>
+    
     <hr class="none">
     <div class="item clearfix row">
       <div class="main col-md-9 pull-right padding-left-zero row">
