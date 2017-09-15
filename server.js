@@ -14,6 +14,8 @@ Paymentwall.Configure(
   '3bc987ae58c2fe434f8a4b83abcd9c2f'
 );
 
+var uid = "";
+
 
 app.get('/', function(req, res) {
 	var pingback = new Paymentwall.Pingback(req.query, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
@@ -26,10 +28,29 @@ app.get('/', function(req, res) {
 	  } 
 	  console.log('OK');
 	  res.send('OK');
+	  rewardUser(req.query.uid, req.query.currency, 'coins');
 	} else {
 	  console.log(pingback.getErrorSummary());
 	}
 })
+
+
+//universal function for emitting data to socket connection later it will replaced by socket on connection event
+var rewardUser = (rewardedUser, amount, currency) => { };
+
+io.on('connection', function (socket) {
+	socket.on('getOffer', function (data) {
+		uid = data.uid;
+	});
+
+	rewardUser = function (rewardedUser, amount, currency) {
+		var emitter = 'reward' + rewardedUser;
+		socket.emit(emitter, { amount: amount, currency: currency });
+	}
+});
+
+
+
 
 var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var server_ip_address = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
