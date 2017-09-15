@@ -2,6 +2,10 @@
 var Paymentwall = require('paymentwall');
 var express = require('express');
 var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var http = require('http');
+var crypto = require('crypto');
 
 
 Paymentwall.Configure(
@@ -12,7 +16,7 @@ Paymentwall.Configure(
 
 
 app.get('/', function(req, res) {
-	var pingback = new Paymentwall.Pingback(req.query, req.headers['x-forwarded-for'] || req.connection.remoteAddress;);
+	var pingback = new Paymentwall.Pingback(req.query, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
 	if (pingback.validate()) {
 	  var virtualCurrency = pingback.getVirtualCurrencyAmount();
 	  if (pingback.isDeliverable()) {
@@ -26,3 +30,12 @@ app.get('/', function(req, res) {
 	  console.log(pingback.getErrorSummary());
 	}
 })
+
+var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+
+// start server on the specified port and binding host
+server.listen(server_port, server_ip_address, function () {
+	// print a message when the server starts listening
+	console.log("server starting on " + server_port);
+});
