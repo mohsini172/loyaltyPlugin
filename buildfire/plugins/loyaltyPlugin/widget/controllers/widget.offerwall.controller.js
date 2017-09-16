@@ -10,11 +10,36 @@
         WidgetOfferwall.isError = false;
         WidgetOfferwall.offers = null;
         WidgetOfferwall.listeners = {};
+        WidgetOfferwall.srcPaymentWall = "";
         WidgetOfferwall.trustSrc = function (src) {
           var temp = $sce.trustAsResourceUrl(src);
           console.log(temp);
           return temp;
         }
+        buildfire.auth.getCurrentUser((err, user) => {
+          if (user) {
+            buildfire.datastore.get("credentials", (err, data) => {
+              if (err) {
+                return buildfire.notifications.alert({ message: "No credentials found" }, () => { });
+              }
+              else {
+                var credentials = data.data;
+                var uid = user._id;
+                var server = credentials.server;
+                var widgetid = credentials.widgetid;
+                var publicKey = credentials.key;
+                var secretKey = credentials.secretKey;
+                var hash = sha256('email=' + 'mohsini172@gmail.com' + "evaluation=1" + "key=" + publicKey + "sign_version=3" + "uid=" + uid + 'widget=' + widgetid + secretKey);
+                var params = "key=" + publicKey + "&uid=" + uid + '&widget=' + widgetid + "&sign_version=3" + '&email=' + 'mohsini172@gmail.com' + "&evaluation=1" + '&sign=' + hash;
+                $timeout(function(){
+                  WidgetOfferwall.srcPaymentWall = 'https://api.paymentwall.com/api/?' + params;
+                }, 100)
+                
+
+              }
+            });
+          }
+        });
         buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
           if (result && result.length) {
             result.forEach(function (breadCrumb) {
@@ -35,12 +60,12 @@
           $timeout(() => {
             buildfire.spinner.hide()
             offers = JSON.parse(offers);
-            if(offers.code != 'OK' && offers.code!= 'NO_CONTENT'){
+            if (offers.code != 'OK' && offers.code != 'NO_CONTENT') {
               WidgetOfferwall.isError = true;
               offers.message = offers.message.replace('hash', 'api');
               WidgetOfferwall.error_message = "There is some error in fetching the offers please make sure you have provided the right credentials.";
             }
-            else{
+            else {
               WidgetOfferwall.offers = offers.offers;
             }
           }, 100);

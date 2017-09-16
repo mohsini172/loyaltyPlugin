@@ -14,7 +14,8 @@
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
         'http://cdn*.sponsorpay.com/**',
-        'http://api.fyber.com/**'
+        'http://api.fyber.com/**',
+        'https://api.paymentwall.com/api/**'
       ]);
 
       $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
