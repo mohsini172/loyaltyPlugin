@@ -17,23 +17,23 @@
         WidgetRedeem.context = Context.getContext();
         WidgetRedeem.listeners = {};
 
-          buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
-              if(result && result.length) {
-                  result.forEach(function(breadCrumb) {
-                      if(breadCrumb.label == 'Redeem') {
-                          breadCrumbFlag = false;
-                      }
-                  });
+        buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+          if (result && result.length) {
+            result.forEach(function (breadCrumb) {
+              if (breadCrumb.label == 'Redeem') {
+                breadCrumbFlag = false;
               }
-              if(breadCrumbFlag) {
-                  buildfire.history.push('Redeem', { elementToShow: 'Redeem' });
-              }
-          });
+            });
+          }
+          if (breadCrumbFlag) {
+            buildfire.history.push('Redeem', { elementToShow: 'Redeem' });
+          }
+        });
 
-          //Refresh item details on pulling the tile bar
+        //Refresh item details on pulling the tile bar
 
-          buildfire.datastore.onRefresh(function () {
-          });
+        buildfire.datastore.onRefresh(function () {
+        });
 
         if (RewardCache.getReward()) {
           WidgetRedeem.reward = RewardCache.getReward();
@@ -53,9 +53,20 @@
           var redeemSuccess = function () {
             Buildfire.spinner.hide();
             $rootScope.$broadcast('POINTS_REDEEMED', WidgetRedeem.reward.pointsToRedeem);
-            ViewStack.push({
-              template: 'Success'
-            });
+            var nPlugin = $rootScope.nPlugin
+            if (nPlugin) {
+              nPlugin = JSON.parse(nPlugin);
+              nPlugin.title = nPlugin.name;
+              buildfire.navigation.navigateTo(nPlugin);
+            }
+            else {
+              ViewStack.push({
+                template: 'Offerwall'
+              });
+            }
+            // ViewStack.push({
+            //   template: 'Success'
+            // });
           };
 
           var redeemFailure = function (error) {
@@ -135,12 +146,12 @@
           }
         });
 
-          WidgetRedeem.listeners['CHANGED'] = $rootScope.$on('VIEW_CHANGED', function (e, type, view) {
-              if (ViewStack.getCurrentView().template == 'Redeem') {
-                  buildfire.datastore.onRefresh(function () {
-                  });
-              }
-          });
+        WidgetRedeem.listeners['CHANGED'] = $rootScope.$on('VIEW_CHANGED', function (e, type, view) {
+          if (ViewStack.getCurrentView().template == 'Redeem') {
+            buildfire.datastore.onRefresh(function () {
+            });
+          }
+        });
 
         /**
          * Check for current logged in user

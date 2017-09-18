@@ -138,6 +138,18 @@
           });
         };
 
+
+        buildfire.datastore.get("credentials", (err, data) => {
+          if (err) {
+            return buildfire.notifications.alert({ message: "No credentials found" }, () => { });
+          }
+          else {
+            var credentials = data.data;
+            $rootScope.nPlugin = credentials.plugin;
+            
+          }
+        });
+
         /**
          * This event listener is bound for "POINTS_REDEEMED" event broadcast
          */
