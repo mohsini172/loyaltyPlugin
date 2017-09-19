@@ -10,8 +10,8 @@ var crypto = require('crypto');
 
 Paymentwall.Configure(
   Paymentwall.Base.API_VC,
-  'ad395761885bf86413f25ac0c5ff5c73',
-  '3bc987ae58c2fe434f8a4b83abcd9c2f'
+  '8deeef7fe02adc3b9f6303980f98aa03',
+  'c5a417cb537af0208585f5ede8470c40'
 );
 
 var uid = "";
