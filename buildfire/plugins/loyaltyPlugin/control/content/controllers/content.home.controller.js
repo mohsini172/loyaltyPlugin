@@ -3,8 +3,8 @@
 (function (angular, buildfire) {
   angular
     .module('loyaltyPluginContent')
-    .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'LoyaltyAPI', 'STATUS_CODE', '$modal', 'RewardCache', '$location', '$timeout', 'context',
-      function ($scope, Buildfire, LoyaltyAPI, STATUS_CODE, $modal, RewardCache, $location, $timeout, context) {
+    .controller('ContentHomeCtrl', ['$scope', 'Buildfire', '$rootScope', 'LoyaltyAPI', 'STATUS_CODE', '$modal', 'RewardCache', '$location', '$timeout', 'context',
+      function ($scope, Buildfire, $rootScope, LoyaltyAPI, STATUS_CODE, $modal, RewardCache, $location, $timeout, context) {
         console.log("---------------------", context);
         var ContentHome = this;
         var _data = {
@@ -38,6 +38,7 @@
             }
             $timeout(function(){
               ContentHome.plugins = plugins;
+              $rootScope.plugins = plugins;
             }, 100)
             console.log(ContentHome.plugins);
           }

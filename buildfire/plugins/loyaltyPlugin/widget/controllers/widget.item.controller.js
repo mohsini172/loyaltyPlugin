@@ -12,6 +12,8 @@
         WidgetItem.listeners = {};
         WidgetItem.insufficientPoints = false;
 
+        
+
         //create new instance of buildfire carousel viewer
         WidgetItem.view = null;
 

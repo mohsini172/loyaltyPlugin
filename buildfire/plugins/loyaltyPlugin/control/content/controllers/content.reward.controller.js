@@ -3,8 +3,8 @@
 (function (angular, buildfire) {
   angular
     .module('loyaltyPluginContent')
-    .controller('ContentRewardCtrl', ['$scope', 'Buildfire', 'LoyaltyAPI', 'STATUS_CODE', '$location', '$routeParams', 'RewardCache', 'context',
-      function ($scope, Buildfire, LoyaltyAPI, STATUS_CODE, $location, $routeParams, RewardCache, context) {
+    .controller('ContentRewardCtrl', ['$scope', '$rootScope', 'Buildfire', 'LoyaltyAPI', 'STATUS_CODE', '$location', '$routeParams', 'RewardCache', 'context',
+      function ($scope, $rootScope, Buildfire, LoyaltyAPI, STATUS_CODE, $location, $routeParams, RewardCache, context) {
         var ContentReward = this;
         ContentReward.item = {
           title: "",
@@ -23,7 +23,7 @@
           trusted: true,
           theme: 'modern'
         };
-
+        console.log($rootScope.plugins);
         //Scroll current view to top when page loaded.
         buildfire.navigation.scrollTop();
 
@@ -70,7 +70,7 @@
         };
 
         /* list image add <start>*/
-        ContentReward.listImage = new Buildfire.components.images.thumbnail("#listImage", {title: "List Image", dimensionsLabel : " "});
+        ContentReward.listImage = new Buildfire.components.images.thumbnail("#listImage", { title: "List Image", dimensionsLabel: " " });
         ContentReward.listImage.onChange = function (url) {
           ContentReward.item.listImage = url;
           if (!$scope.$$phase && !$scope.$root.$$phase) {
@@ -133,21 +133,21 @@
           data.userToken = ContentReward.currentLoggedInUser && ContentReward.currentLoggedInUser.userToken;
           data.auth = ContentReward.currentLoggedInUser && ContentReward.currentLoggedInUser.auth;
           var success = function (result) {
-              console.info('Saved data result: ', result);
-              updateMasterItem(newObj);
-              ContentReward.itemSaved = true;
-              ContentReward.item.deepLinkUrl = Buildfire.deeplink.createLink({id: result._id});
-              ContentReward.item = Object.assign(ContentReward.item, result);
-              ContentReward.isInserted = true;
-              if (ContentReward.item._id) {
-                buildfire.messaging.sendMessageToWidget({
-                  id: ContentReward.item._id,
-                  type: 'AddNewItem',
-                  data: ContentReward.item
-                });
-              }
-//              if($scope.$$phase) $scope.$digest();
+            console.info('Saved data result: ', result);
+            updateMasterItem(newObj);
+            ContentReward.itemSaved = true;
+            ContentReward.item.deepLinkUrl = Buildfire.deeplink.createLink({ id: result._id });
+            ContentReward.item = Object.assign(ContentReward.item, result);
+            ContentReward.isInserted = true;
+            if (ContentReward.item._id) {
+              buildfire.messaging.sendMessageToWidget({
+                id: ContentReward.item._id,
+                type: 'AddNewItem',
+                data: ContentReward.item
+              });
             }
+            //              if($scope.$$phase) $scope.$digest();
+          }
             , error = function (err) {
               ContentReward.isInserted = false;
               ContentReward.itemSaved = true;
@@ -175,9 +175,9 @@
           });
           $scope.$digest();
           var success = function (result) {
-              console.info('Saved data result: ', result);
-              ContentReward.itemSaved = true;
-            }
+            console.info('Saved data result: ', result);
+            ContentReward.itemSaved = true;
+          }
             , error = function (err) {
               console.error('Error while saving data : ', err);
               ContentReward.itemSaved = true;
@@ -210,7 +210,7 @@
 
         if ($routeParams.id && RewardCache.getReward()) {
           ContentReward.item = RewardCache.getReward();
-          ContentReward.item.deepLinkUrl = Buildfire.deeplink.createLink({id: ContentReward.item._id});
+          ContentReward.item.deepLinkUrl = Buildfire.deeplink.createLink({ id: ContentReward.item._id });
           console.log("aaaaaaaaaaaaaaaaaaaaaa", ContentReward.item);
           ContentReward.listImage.loadbackground(ContentReward.item.listImage);
           /* ContentReward.BackgroundImage.loadbackground(ContentReward.item.BackgroundImage);  */  //enable it when you want to show add background on reward add
