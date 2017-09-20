@@ -23,7 +23,7 @@
           trusted: true,
           theme: 'modern'
         };
-        console.log($rootScope.plugins);
+        ContentReward.plugins = $rootScope.plugins;
         //Scroll current view to top when page loaded.
         buildfire.navigation.scrollTop();
 
@@ -249,6 +249,18 @@
             }, 500);
           }
         };
+
+        ContentReward.savePlugin = function () {
+          var tagname = "redeemPlugin" + ContentReward.item.title;
+          var redeemPlugin = JSON.parse(ContentReward.redeemPlugin);
+
+          buildfire.datastore.save(redeemPlugin, tagname, (err, status) => {
+            if (err)
+              buildfire.notifications.alert({ message: "There was an error in saving" }, () => { });
+            else
+              buildfire.notifications.alert({ message: "Your data was successfully saved" }, () => { });
+          })
+        }
 
         /*
          * watch for changes in data and trigger the saveDataWithDelay function on change

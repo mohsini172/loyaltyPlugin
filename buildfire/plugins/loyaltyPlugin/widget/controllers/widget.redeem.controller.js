@@ -53,17 +53,26 @@
           var redeemSuccess = function () {
             Buildfire.spinner.hide();
             $rootScope.$broadcast('POINTS_REDEEMED', WidgetRedeem.reward.pointsToRedeem);
-            var nPlugin = $rootScope.nPlugin
-            if (nPlugin) {
-              nPlugin = JSON.parse(nPlugin);
-              nPlugin.title = nPlugin.name;
-              buildfire.navigation.navigateTo(nPlugin);
-            }
-            else {
-              ViewStack.push({
-                template: 'Offerwall'
-              });
-            }
+            var redirectPluginName = "redeemPlugin" + WidgetRedeem.reward.title;
+            buildfire.datastore.get(redirectPluginName, (err, data) => {
+              if (err) {
+                return buildfire.notifications.alert({ message: "No credentials found" }, () => { });
+              }
+              else {
+                var nPlugin = data.data;
+                if (nPlugin) {
+                  nPlugin.title = nPlugin.name;
+                  buildfire.navigation.navigateTo(nPlugin);
+                }
+                else {
+                  ViewStack.push({
+                    template: 'Offerwall'
+                  });
+                }
+
+              }
+            });
+
             // ViewStack.push({
             //   template: 'Success'
             // });
